@@ -156,18 +156,3 @@ trading-system-design/
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-
-When adding new documentation:
-
-1. Follow the problem-constraints-choices-trade-offs structure
-2. Include diagrams for complex workflows
-3. Document failure scenarios and recovery strategies
-4. Explain design decisions, not just implementations
-5. Keep it technology-agnostic where possible
-
----
-
-**Last Updated**: 2025-01-03  
-**Version**: 1.0
-
