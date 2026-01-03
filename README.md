@@ -2,7 +2,7 @@
 
 ## Overview
 
-This repository contains comprehensive system design documentation for a real-time algorithmic trading system. It focuses on design principles, architectural decisions, and trade-offs rather than implementation code.
+This repository contains comprehensive system design documentation for a real-time low-latency algorithmic trading system. It focuses on design principles, architectural decisions, and trade-offs rather than implementation code.
 
 ## Purpose
 
@@ -19,21 +19,10 @@ This repository contains comprehensive system design documentation for a real-ti
 5. **[WebSocket Architecture](05-websocket-design.md)** - Real-time communication design, connection management, and monitoring loops
 6. **[Monitoring Loop Design](06-monitoring-loop.md)** - Automated monitoring workflow, steps, conditions, and data synchronization
 
-### Diagrams and Visualizations
-
-7. **[Sequence Diagrams](07-sequence-diagrams.md)** - Detailed sequence diagrams for key workflows:
-   - User authentication flow
-   - Order placement workflow
-   - Real-time monitoring cycle
-   - PnL calculation process
-   - Order modification workflow
-
-### Reliability and Scalability
-
-8. **[Failure Handling](08-failure-handling.md)** - Failure scenarios, error handling strategies, recovery mechanisms, and fault tolerance
-9. **[Scaling Strategies](09-scaling-strategies.md)** - Horizontal scaling, database scaling, caching strategies, and performance optimization
 
 ## Design Principles
+
+**Important**: This design is conceptual and contains no proprietary code, algorithms, or business logic. It represents architectural patterns and design decisions that could be applied to similar trading systems.
 
 ### Problem-Solution Approach
 
@@ -45,20 +34,56 @@ Each document follows a structured format:
 - **Trade-offs**: What are the benefits and limitations of the chosen approach?
 - **Failure Scenarios**: How does the system handle failures?
 
-### Key Design Decisions
+### Background
 
-1. **Real-time Processing**: WebSocket-based monitoring for sub-minute latency
-2. **FIFO PnL Matching**: Accurate profit/loss calculation using first-in-first-out algorithm
-3. **Conditional Execution**: Dependency-based workflow ensures data consistency
-4. **Multi-tenancy**: User isolation with permission-based access control
-5. **Time Restrictions**: Trading hour enforcement at system level
-6. **Transaction Safety**: Database transactions for critical operations
+At QuanTradeAI, I worked on order lifecycle management and real-time alert reliability for algorithmic trading systems. This repository is a design-first, clean-room representation of engineering patterns and architectural decisions applied in production trading systems.
+
+## Repository Structure
+
+```
+trading-system-design/
+├── README.md                    # This file - start here
+├── 01-system-overview.md        # Problem statement, goals, constraints
+├── 02-architecture.md           # System architecture with diagrams
+├── 03-database-design.md        # Database schema and design
+├── 04-api-design.md             # REST API endpoints and design
+├── 05-websocket-design.md       # WebSocket architecture
+├── 06-monitoring-loop.md        # Monitoring, metrics, and operations
+└── LICENSE                      # License (MIT)
+```
+
+## Key Design Decisions
+
+### 1. Real-time Communication: WebSocket over Polling
+- Lower latency for real-time updates
+- Reduced server load
+- Bidirectional communication capability
+
+### 2. FIFO PnL Matching Algorithm
+- Accurate profit/loss calculation
+- Handles partial fills correctly
+- Standard accounting practice
+
+### 3. Conditional Execution Workflow
+- Ensures data consistency
+- Prevents cascading failures
+- Clear dependency management
+
+### 4. Session-Based Authentication
+- Better server-side control
+- Easier session revocation
+- Simpler token management
+
+### 5. Transaction-Based Database Operations
+- Data consistency guarantee
+- Atomic operations
+- Rollback capability
 
 ## System Characteristics
 
 ### Performance Requirements
 - **Monitoring Frequency**: 60-second cycles
-- **API Latency**: Sub-100ms for order placement
+- **API Latency**: <100ms for order placement
 - **WebSocket Updates**: Real-time (immediate propagation)
 - **Database Queries**: Optimized with indexes for <50ms response
 
@@ -70,7 +95,7 @@ Each document follows a structured format:
 
 ### Scalability Requirements
 - **Concurrent Users**: Support 1000+ concurrent WebSocket connections
-- **Accounts per User**: Multiple trading accounts per user
+- **Multi-Account per User**: Multiple trading accounts per user
 - **Orders per Second**: Handle 100+ order placements per second
 - **Database Growth**: Efficient indexing for millions of order records
 
@@ -100,14 +125,26 @@ Each document follows a structured format:
 - **Decision Tables**: Used for conditional logic documentation
 - **Trade-off Matrices**: Used for design decision comparisons
 
-## Usage
+## How to Use This Repository
 
-This repository is intended for:
+### For Interviews
+1. Review the system overview and architecture
+2. Understand key design decisions and trade-offs
+3. Prepare to discuss scaling strategies and failure handling
+4. Reference specific components when discussing experience
 
-- **System Architects**: Understanding overall design and scaling considerations
-- **New Team Members**: Onboarding and system understanding
-- **Technical Reviewers**: Design review and architectural assessment
-- **Stakeholders**: High-level system understanding
+### For Design Reviews
+1. Start with system overview for context
+2. Review architecture diagrams and component interactions
+3. Examine database design and API specifications
+4. Evaluate trade-offs and failure scenarios
+
+### For Learning
+1. Read documents in order (01 → 06)
+2. Study the diagrams and sequence flows
+3. Understand the rationale behind design choices
+4. Explore failure handling and scaling strategies
+
 
 ## Important Notes
 
@@ -116,7 +153,10 @@ This repository is intended for:
 - **Design Only**: Focus on architecture, design patterns, and trade-offs
 - **Technology Agnostic**: Concepts can be applied to similar systems
 
-## Contributing
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
 
 When adding new documentation:
 
